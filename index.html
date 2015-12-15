@@ -6,13 +6,14 @@
 		<script type="text/javascript" src="scripts/index.js"></script>
 		
 	</head>
-	<body>
-		<div id="container">
+	<body>		
+		<div id="controlContainer" >
 			<input type="text" id="searchField" value="https://wikipedia.org">
 			<input type="button" id="display" onclick="display()" value="display">
-			<div style="width:800px; height:1000px;">
-
-				<iframe id="iframe" style="width:50%; height:60%;" src="https://wikipedia.org">
+		</div>
+		<div id="frameContainer">
+			<div id="transformContainer">
+				<iframe id="iframe" src="https://wikipedia.org">
 					no iframe support
 				</iframe>
 			</div>

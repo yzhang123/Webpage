@@ -1,11 +1,48 @@
-iframe
-{
-	border-width:0;
-}
 body
 {
 	background:black;
 	text-align: center;
 	margin:0;
 	padding:0;
+}
+
+/*div around button and text field*/
+#controlContainer
+{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	z-index: 1;
+	/*relative to document begin, can be scrolled*/
+	position: absolute;
+	width:100%;
+}
+
+
+
+#frameContainer
+{
+	/* fixed according to browser window, cannot be scrolled*/
+	position:fixed;
+	left: 0px;
+	top: 50px;
+	width:100%;
+	height: calc(100% - 50px);
+	margin:0;
+	perspective: 1600px;
+}
+#transformContainer
+{
+	position:absolute;
+	width: 100%;
+	height: 100%;
+	
+	transform-origin: bottom;
+	perspective-origin: bottom;
+}
+#iframe
+{
+	border-width: 0;
+	width: 100%;
+	height: calc(100% + 368px);
+	transform: translateY(-368px);
 }
