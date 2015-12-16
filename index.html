@@ -10,6 +10,7 @@
 		<div id="controlContainer" >
 			<input type="text" id="searchField" value="https://wikipedia.org">
 			<input type="button" id="display" onclick="display()" value="display">
+			
 		</div>
 		<div id="frameContainer">
 			<div id="transformContainer">
@@ -17,6 +18,14 @@
 					no iframe support
 				</iframe>
 			</div>
+			<aside>
+				<div id="sliderContainer">
+					<input type="range" id="slider" name="tilt" min="-50" max="50" oninput="sliderchange()">
+				</div>
+				
+			</aside>
 		</div>
+		
+		
 	</body>
 </html>

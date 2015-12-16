@@ -5,25 +5,20 @@ var tiltDeg;
 var perspective;
 var frameContainer;
 var transformContainer;
+var slider;
 
 // called when html is loaded
 function Main() {
 	
 button_display = $("#display");
 text_input = $("#searchField");
+slider = $("#slider");
 frame = $("#iframe");
 transformContainer = $("#transformContainer");
 frameContainer = $("#frameContainer");
-tiltDeg = 30;
-perspective = 1600;
 
-frameContainer.css("perspective", perspective + "px")
-transformContainer.css("transform",  "rotateX(" + tiltDeg + "deg)");
-var pageContainerHeight = transformContainer.height();
-var extendedHeightForRotation = 1/(Math.cos(tiltDeg*Math.PI/ 180)/pageContainerHeight - Math.sin(tiltDeg*Math.PI/ 180)/perspective);
-frame.css("height", extendedHeightForRotation + "px");
-var offsetY = extendedHeightForRotation - pageContainerHeight;
-frame.css("transform", "translateY(-" + offsetY + "px)");
+tiltDeg = 0;
+perspective = 1600;
 
 text_input.keydown(function(event)
 {
@@ -32,12 +27,10 @@ text_input.keydown(function(event)
 		display();
 	}	
 });
-
-
-
-
+tiltWebpage();
 }
 
+// displays wepage due to input url
 function display()
 {
 	var url = validateURL(text_input[0].value);
@@ -56,4 +49,23 @@ function validateURL(url)
 	
 }
 
+function sliderchange()
+{
+	var slidervalue = parseInt(slider[0].value);
+	tiltDeg = slidervalue;	
+	tiltWebpage();
+}
+
+
+function tiltWebpage()
+{
+	frameContainer.css("perspective", perspective + "px")
+	transformContainer.css("transform",  "rotateX(" + tiltDeg + "deg)");
+	var pageContainerHeight = transformContainer.height();
+	var extendedHeightForRotation = 1/(Math.cos(tiltDeg*Math.PI/ 180)/pageContainerHeight - Math.sin(tiltDeg*Math.PI/ 180)/perspective);
+	frame.css("height", extendedHeightForRotation + "px");
+	var offsetY = extendedHeightForRotation - pageContainerHeight;
+	frame.css("transform", "translateY(-" + offsetY + "px)");
+	//display();
+}
 window.onload = Main;
