@@ -20,6 +20,26 @@ frameContainer = $("#frameContainer");
 tiltDeg = 0;
 perspective = 1600;
 
+/*
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+{
+	// User is on mobile device and preferece cookie is not set. Ask if they want to use the mobile version.
+	var useMobile = confirm("Hey there! You are using a mobile device. Do you want to be redirected to the mobile version of this website?");
+	if (useMobile == false) {
+		// User is on a mobile device but wants to use the regular version.
+		$("link")[1].setAttribute("href", "css/style.css");
+	}
+	
+	$("body, #frameContainer").on("swiperight",function(event)
+		{
+			
+		}
+	);
+	
+	
+}
+*/
+
 text_input.keydown(function(event)
 {
 	if (event.keyCode == 13)
@@ -68,4 +88,5 @@ function tiltWebpage()
 	frame.css("transform", "translateY(-" + offsetY + "px)");
 	//display();
 }
-window.onload = Main;
+
+
