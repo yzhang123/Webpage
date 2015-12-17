@@ -1,18 +1,20 @@
 
-
-aside
+td.showSlider
 {
-	transition: all 0.1s;
-	box-sizing: border-box;
-	height:100%;
-	width: 70px;
-	/*border:5px solid red;*/
-	position:relative;
-	left: -69px;
-	line-height: 500px;
+	display: table-cell;
+}
+input.showSlider
+{
+	display: inline-block;
 }
 
-aside:hover, aside:active
+#sliderContainer
+{
+	transition: all 0.1s;
+	left: -69px;
+}
+
+#sliderContainer:hover, #sliderContainer:active, #sliderContainer.sliderVisible
 {
 	left: 0;
 }
