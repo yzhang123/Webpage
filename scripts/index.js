@@ -7,48 +7,59 @@ var frameContainer;
 var transformContainer;
 var slider;
 
-// called when html is loaded
-function Main() {
+$(document).on( "pagecreate", function() {
+	button_display = $("#display");
+	text_input = $("#searchField");
+	slider = $("#slider");
+	frame = $("#iframe");
+	transformContainer = $("#transformContainer");
+	frameContainer = $("#frameContainer");
 	
-button_display = $("#display");
-text_input = $("#searchField");
-slider = $("#slider");
-frame = $("#iframe");
-transformContainer = $("#transformContainer");
-frameContainer = $("#frameContainer");
-
-tiltDeg = 0;
-perspective = 1600;
-
-/*
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
-{
-	// User is on mobile device and preferece cookie is not set. Ask if they want to use the mobile version.
-	var useMobile = confirm("Hey there! You are using a mobile device. Do you want to be redirected to the mobile version of this website?");
-	if (useMobile == false) {
-		// User is on a mobile device but wants to use the regular version.
-		$("link")[1].setAttribute("href", "css/style.css");
-	}
+	tiltDeg = 0;
+	perspective = 1600;
 	
-	$("body, #frameContainer").on("swiperight",function(event)
-		{
-			
-		}
-	);
-	
-	
-}
-*/
-
-text_input.keydown(function(event)
-{
-	if (event.keyCode == 13)
+	/*
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 	{
-		display();
-	}	
+		// User is on mobile device and preferece cookie is not set. Ask if they want to use the mobile version.
+		var useMobile = confirm("Hey there! You are using a mobile device. Do you want to be redirected to the mobile version of this website?");
+		if (useMobile == false) {
+			// User is on a mobile device but wants to use the regular version.
+			$("link")[1].setAttribute("href", "css/style.css");
+		}
+		
+		$("body, #frameContainer").on("swiperight",function(event)
+			{
+				
+			}
+		);
+		
+		
+	}
+	*/
+	
+	// $("#mainpage").on( "swiperight", function() {
+	//         $( "#left-panel" ).panel( "open" );
+	// });
+	
+	// $("#mainpage").on( "swipeleft", function() { 
+	//         $( "#left-panel" ).panel( "close" );
+	// });
+	
+	text_input.keydown(function(event)
+	{
+		if (event.keyCode == 13)
+		{
+			display();
+		}	
+	});
+	
+	$(document).on( "swiperight", function() {
+			$( "#left-panel" ).panel( "open" );
+	});
 });
-tiltWebpage();
-}
+
+$(document).on( "pagecontainerload", tiltWebpage);
 
 // displays wepage due to input url
 function display()

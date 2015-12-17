@@ -3,36 +3,37 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
+		<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<!--<link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css">-->
 		<link rel="stylesheet" type="text/css" href="css/style600.css" media="screen and (max-width:600px)">
 		
 		<script type="text/javascript" src="scripts/jquery-1.11.3.min.js"></script>
-		<!--<script type="text/javascript" src="scripts/jquery.mobile-1.4.5.js"></script>-->
+		<script type="text/javascript" src="scripts/jquery.mobile-1.4.5.js"></script>
 		<script type="text/javascript" src="scripts/index.js"></script>
-		
-		
 	</head>
-	<body onload="Main()">		
-		<div id="controlContainer" >
-			<input type="text" id="searchField" value="https://wikipedia.org">
-			<input type="button" id="display" onclick="display()" value="display">
-			
-		</div>
-		<div id="frameContainer">
-			<div id="transformContainer">
-				<iframe id="iframe" src="https://wikipedia.org">
-					no iframe support
-				</iframe>
+	<body>	
+		<div date-role="page" id="mainpage">	
+			<div data-role="header" id="controlContainer" >
+				<input type="text" id="searchField" value="https://wikipedia.org">
+				<input type="button" id="display" onclick="display()" value="display">
 			</div>
-			<aside>
-				<div id="sliderContainer">
-					<input type="range" id="slider" name="tilt" min="-50" max="50" oninput="sliderchange()">
+			<!-- left panel -->
+			<div data-role="panel" id="left-panel" data-display="push" data-position="left">
+				<p>left panel</p>
+			</div>
+			<div id="frameContainer">
+				<div id="transformContainer">
+					<iframe id="iframe" src="https://wikipedia.org">
+						no iframe support
+					</iframe>
 				</div>
-				
-			</aside>
+				<!--<aside>
+					<div id="sliderContainer">
+						<input type="range" id="slider" name="tilt" min="-50" max="50" oninput="sliderchange()">
+					</div>
+					
+				</aside>-->
+			</div>
 		</div>
-		
-		
 	</body>
 </html>
