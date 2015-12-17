@@ -1,4 +1,15 @@
 
+#controlContainer #searchField
+{
+	width: 100%;	
+}
+
+#controlContainer #display
+{
+	width: 100%;
+}
+
+
 td.showSlider
 {
 	display: table-cell;
@@ -6,6 +17,10 @@ td.showSlider
 input.showSlider
 {
 	display: inline-block;
+}
+td.showLabel
+{
+	display: none;
 }
 
 #sliderContainer

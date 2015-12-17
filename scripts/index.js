@@ -92,6 +92,13 @@ function sliderchange()
 
 function tiltWebpage()
 {
+	if (tiltDeg < 0) {
+		transformContainer.css("transform-origin", "top");
+		transformContainer.css("perspective-origin", "top");
+	} else {
+		transformContainer.css("transform-origin", "bottom");
+		transformContainer.css("perspective-origin", "bottom");
+	}
 	frameContainer.css("perspective", perspective + "px")
 	transformContainer.css("transform",  "rotateX(" + tiltDeg + "deg)");
 	var pageContainerHeight = transformContainer.height();

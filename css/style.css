@@ -24,6 +24,7 @@ body
 {
 	padding: 2px;
 }
+
 #controlContainer input
 {
 	background: #FFF;
@@ -33,11 +34,31 @@ body
 	padding: 3px;
 	border-radius: 3px;
 	border: 1px solid gray;
+
+}
+
+#controlContainer #searchField
+{
+	width: 430px;	
+}
+
+#controlContainer #display
+{
+	width: 100px;
+	background-color: darkgray;
 }
 
 .showSlider
 {
 	display: none;
+}
+td.showLabel
+{
+	display: table-cell;
+}
+.showLabel
+{
+	display: inline-block
 }
 
 #frameContainer
