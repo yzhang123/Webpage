@@ -25,10 +25,6 @@
 {
 	left: 0;
 }
-#sliderContainer:active
-{
-	width: 100%;
-}
 
 #transformContainer
 {

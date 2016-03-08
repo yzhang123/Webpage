@@ -86,18 +86,17 @@ function setTilt(value)
     // update slider for consistency
     slider.noUiSlider.set(value);
     
-    // update iframe tilt direction 
+    // update iframe tilt direction
+    transformContainer.css("perspective", perspective + "px");
 	if (value < 0) {
-		transformContainer.css("transform-origin", "top");
+		frame.css("transform-origin", "top");
 		transformContainer.css("perspective-origin", "bottom");
 	} else {
-		transformContainer.css("transform-origin", "bottom");
+		frame.css("transform-origin", "bottom");
 		transformContainer.css("perspective-origin", "top");
 	}
-	$("#frameContainer").css("perspective", perspective + "px");
     var scale = 1 / Math.cos(value / 180 * Math.PI);
-	transformContainer.css("transform",  "rotateX(" + value + "deg) scale(1," + scale + ")");
-	var pageContainerHeight = transformContainer.height();
+	frame.css("transform", "rotateX(" + value + "deg) scale(1," + scale + ")");
 }
 
 // registers gyro if available
