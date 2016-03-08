@@ -1,38 +1,38 @@
 <!doctype html>
 <html>
 	<head>
+        <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 
 		<link rel="stylesheet" type="text/css" href="css/nouislider.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" type="text/css" href="css/style600.css" media="screen and (max-width:800px)">
+		<link rel="stylesheet" type="text/css" href="css/style600.css" media="screen and (max-width:600px)">
 		
 		<script type="text/javascript" src="scripts/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="scripts/nouislider.min.js"></script>
 		<script type="text/javascript" src="scripts/index.js"></script>
-		
+        <title>Tilt</title>
 	</head>
-	<body onload="Main()">		
+	<body onload="Main()">
 		<div id="controlContainer">
 			<table>
 				<tr>
-					<td style="width:30px" class="showSlider"><input type="button" class="showSlider" id="showSlider" onclick="showSlider()" value=">" style="cursor:pointer"></td>
-					<td style="width:80px" class="showLabel"><label for="url" class="showLabel"  id="urlLabel">URL</label></td>
-					<td style="width:auto"><input type="text" id="searchField" value="https://wikipedia.org"></td>
-					<td style="width:100px"><input type="button" id="display" onclick="display()" value="enter" style="cursor:pointer"></td>			
+					<td style="width:40px"><input type="button" id="pinButton" onclick="onPinButtonClick()"></td>
+					<td style="width:auto"><input type="text" id="searchField"></td>
 				</tr>
 			</table>
 		</div>
 		<div id="frameContainer">
+            <div id="sliderHandle">&gt;&gt;</div>
+            <aside id="sliderContainer">
+                <div id="slider" class="noUiSlider"></div>
+            </aside>
 			<div id="transformContainer">
-				<iframe id="iframe" src="https://wikipedia.org">
+				<iframe name="iframe" id="iframe">
 					no iframe support
 				</iframe>
 			</div>
-			<aside id="sliderContainer">
-				<div id="slider" class="noUiSlider"></div>
-			</aside>
 		</div>
 	</body>
 </html>

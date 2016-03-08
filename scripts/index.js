@@ -1,128 +1,192 @@
 /// <reference path="nouislider.min.js"/>
 
-var button_display;
+// constants
+var URL_INITIAL = "https://wikipedia.org";
+var ABSOLUTE_TILT_MIN = -50;
+var ABSOLUTE_TILT_MAX = 50;
+
 var text_input;
 var frame;
-var tiltDeg;
 var perspective;
-var frameContainer;
 var transformContainer;
 var slider;
 var sliderContainer;
+var pinButton;
 
 // called when html is loaded
 function Main() {
-	button_display = $("#display");
 	text_input = $("#searchField");
-	slider = $("#slider");
+	slider = $("#slider")[0];
+    sliderHandle = $("#sliderHandle");
 	sliderContainer = $("#sliderContainer");
 	frame = $("#iframe");
 	transformContainer = $("#transformContainer");
-	frameContainer = $("#frameContainer");
-	
-	tiltDeg = 0;
+	pinButton = $("#pinButton");
+    
 	perspective = 1600;
-	
-	/*
-	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
-	{
-		// User is on mobile device and preferece cookie is not set. Ask if they want to use the mobile version.
-		var useMobile = confirm("Hey there! You are using a mobile device. Do you want to be redirected to the mobile version of this website?");
-		if (useMobile == false) {
-			// User is on a mobile device but wants to use the regular version.
-			$("link")[1].setAttribute("href", "css/style.css");
-		}
-		
-		$("body, #frameContainer").on("swiperight",function(event)
-			{
-				
-			}
-		);
-		
-		
-	}
-	*/
-	
+	// enter-key triggers navigation
 	text_input.keydown(function(event)
 	{
-		if (event.keyCode == 13)
-		{
-			display();
-		}	
+		if (event.keyCode == 13) 
+			navigateTo(text_input.val());
 	});
-	tiltWebpage();
+    // text input goes full screen
+	text_input.click(requestFullScreen);
 	
-	noUiSlider.create(slider[0], {
+	noUiSlider.create(slider, {
+	    animate: false,
 		start: 0,
 		connect: "lower",
 		orientation: "vertical",
 		range: {
-			"min": -50,
-			"max": 50
+			"min": ABSOLUTE_TILT_MIN,
+			"max": ABSOLUTE_TILT_MAX
 		}
 	});
-	slider[0].noUiSlider.on("slide", sliderchange);
+    
+    // sliding handler does: 
+    // changes page tilt, keeps slider visible for 3 more sec
+	slider.noUiSlider.on("slide", function(){
+        var tilt = parseInt(slider.noUiSlider.get());
+        setTilt(tilt);
+        keepSliderVisible();
+    });
+    
+    $("#sliderContainer, #sliderHandle").on("click", keepSliderVisible);
+    
+    setTilt(0);
+    initDeviceOrientation();
+    navigateTo(URL_INITIAL);
+
 }
 
-// displays wepage due to input url
-function display()
+// tilt according to gyro, always active
+var deviceTilt = null;
+// delta between current tilt and device tilt when page is loose
+var addToDeviceTiltWhenLoose = null;
+// tilt as indicated by slider for gui
+var currentTilt = null;
+
+// sets current tilt to given value
+function setTilt(value)
 {
-	var url = validateURL(text_input[0].value);
-	frame[0].src = text_input[0].value = url;
+    if (value < ABSOLUTE_TILT_MIN )
+        value = ABSOLUTE_TILT_MIN;
+        
+    if (value > ABSOLUTE_TILT_MAX )
+        value = ABSOLUTE_TILT_MAX;
+        
+    if (currentTilt == value) return;
+    currentTilt = value;
+    
+    // when Loose update delta
+    if (addToDeviceTiltWhenLoose !== null)
+        addToDeviceTiltWhenLoose = currentTilt - deviceTilt;
+    
+    // update slider for consistency
+    slider.noUiSlider.set(value);
+    
+    // update iframe tilt direction 
+	if (value < 0) {
+		transformContainer.css("transform-origin", "top");
+		transformContainer.css("perspective-origin", "bottom");
+	} else {
+		transformContainer.css("transform-origin", "bottom");
+		transformContainer.css("perspective-origin", "top");
+	}
+	$("#frameContainer").css("perspective", perspective + "px");
+    var scale = 1 / Math.cos(value / 180 * Math.PI);
+	transformContainer.css("transform",  "rotateX(" + value + "deg) scale(1," + scale + ")");
+	var pageContainerHeight = transformContainer.height();
+}
+
+// registers gyro if available
+function initDeviceOrientation()
+{
+    if (window.DeviceOrientationEvent)
+        window.addEventListener('deviceorientation', onOrientationUpdate, false);
+}
+
+// callback called when gyro provides new values
+function onOrientationUpdate(eventData)
+{
+    if (eventData.beta !== null)
+    {
+        var firstTimeCalled = deviceTilt === null;
+        deviceTilt = eventData.beta;
+        // when loose update current tilt
+        if (addToDeviceTiltWhenLoose !== null)
+            setTilt(deviceTilt + addToDeviceTiltWhenLoose);
+
+        if (firstTimeCalled) {
+            pinButton.show();
+            onPinButtonClick(); // to show back pin     
+        }
+    }
+}
+
+function requestFullScreen()
+{
+    var elem = $("body")[0];
+    if (elem.requestFullScreen)
+        elem.requestFullScreen();
+    else if (elem.webkitRequestFullScreen) // for chrome
+        elem.webkitRequestFullScreen();
+}
+
+// displays webpage due to input url
+function navigateTo(url)
+{
+	url = validateURL(url);
+    text_input.val(url);
+    frame.attr("src", "data:text/html,Loading... requested page probably refuses embedding (X-Frame-Options: SAMEORIGIN/DENY)");
+	frame.one("load", function() {
+        frame.attr("src", url);
+    });
+    
+    frame.focus(); // not focusing text box to avoid key board
+    requestFullScreen();
 }
 
 // checks if url is validate (contains protocol etc) and returns just in case the correct one
 function validateURL(url)
 {
-	if (url.search(/^http[s]?\:\/\//)==-1) // does not start with "http"
-	{
+	if (url.search(/^http[s]?\:\/\//) == -1) // does not start with "http"
 		url = "http://" + url;
-	}
 	return url; 
 }
 
-function sliderchange()
+// called when pin button clicked => change button style and stop/initiate deltaWhenLoose 
+function onPinButtonClick()
 {
-	var slidervalue = parseInt(slider[0].noUiSlider.get());
-	tiltDeg = -slidervalue;	
-	tiltWebpage();
-	showSlider(true);
+    if (addToDeviceTiltWhenLoose !== null)
+    {
+        pinButton.removeClass("pinButtonActive");
+        addToDeviceTiltWhenLoose = null;
+    }
+    else
+    {
+        pinButton.addClass("pinButtonActive");
+        addToDeviceTiltWhenLoose = currentTilt - deviceTilt;
+    }
 }
 
-
-function tiltWebpage()
+function showSlider()
 {
-	if (tiltDeg < 0) {
-		transformContainer.css("transform-origin", "top");
-		transformContainer.css("perspective-origin", "top");
-	} else {
-		transformContainer.css("transform-origin", "bottom");
-		transformContainer.css("perspective-origin", "bottom");
-	}
-	frameContainer.css("perspective", perspective + "px")
-	transformContainer.css("transform",  "rotateX(" + tiltDeg + "deg)");
-	var pageContainerHeight = transformContainer.height();
-	var extendedHeightForRotation = 1/(Math.cos(tiltDeg*Math.PI/ 180)/pageContainerHeight - Math.sin(tiltDeg*Math.PI/ 180)/perspective);
-	frame.css("height", extendedHeightForRotation + "px");
-	var offsetY = extendedHeightForRotation - pageContainerHeight;
-	frame.css("transform", "translateY(-" + offsetY + "px)");
+    sliderContainer.addClass("sliderVisible");
+    sliderHandle.css("opacity", "0");
+}
+function hideSlider()
+{
+    sliderContainer.removeClass("sliderVisible");
+    sliderHandle.css("opacity", "1");
 }
 
 var timeOutHandle;
-function showSlider(show)
+function keepSliderVisible(e)
 {
-	if (typeof show == "undefined")
-		show = !sliderContainer.hasClass("sliderVisible");
 	clearTimeout(timeOutHandle);
-	if (show) 
-	{
-		$("#showSlider")[0].value="<";	
-		sliderContainer.addClass("sliderVisible");	
-		timeOutHandle = setTimeout(showSlider, 3000);
-	}
-	else 
-	{
-		$("#showSlider")[0].value=">";	
-		sliderContainer.removeClass("sliderVisible");	
-	}
+    showSlider();
+    // callback hideslider after 3 seconds
+    timeOutHandle = setTimeout(hideSlider, 3000);
 }
