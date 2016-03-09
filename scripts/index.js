@@ -112,7 +112,13 @@ function onOrientationUpdate(eventData)
     if (eventData.beta !== null)
     {
         var firstTimeCalled = deviceTilt === null;
-        deviceTilt = eventData.beta;
+        if(window.innerHeight > window.innerWidth){
+            deviceTilt = eventData.beta;
+        } else 
+        {
+            deviceTilt = -eventData.gamma;
+        }
+        
         // when loose update current tilt
         if (addToDeviceTiltWhenLoose !== null)
             setTilt(deviceTilt + addToDeviceTiltWhenLoose);
@@ -126,7 +132,7 @@ function onOrientationUpdate(eventData)
 
 function requestFullScreen()
 {
-    var elem = $("body")[0];
+    var elem = document.documentElement;
     if (elem.requestFullScreen)
         elem.requestFullScreen();
     else if (elem.webkitRequestFullScreen) // for chrome
@@ -138,7 +144,7 @@ function navigateTo(url)
 {
 	url = validateURL(url);
     text_input.val(url);
-    frame.attr("src", "data:text/html,Loading... requested page probably refuses embedding (X-Frame-Options: SAMEORIGIN/DENY)");
+    frame.attr("src", "loading.html");
 	frame.one("load", function() {
         frame.attr("src", url);
     });

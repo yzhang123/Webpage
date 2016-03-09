@@ -2,8 +2,8 @@
 <html>
 	<head>
         <meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
 
 		<link rel="stylesheet" type="text/css" href="css/nouislider.min.css">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
@@ -15,24 +15,26 @@
         <title>Tilt</title>
 	</head>
 	<body onload="Main()">
-		<div id="controlContainer">
-			<table>
-				<tr>
-					<td style="width:40px"><input type="button" id="pinButton" onclick="onPinButtonClick()"></td>
-					<td style="width:auto"><input type="text" id="searchField"></td>
-				</tr>
-			</table>
-		</div>
-		<div id="frameContainer">
-            <div id="sliderHandle">&gt;&gt;</div>
-            <aside id="sliderContainer">
-                <div id="slider" class="noUiSlider"></div>
-            </aside>
-			<div id="transformContainer">
-				<iframe name="iframe" id="iframe">
-					no iframe support
-				</iframe>
-			</div>
-		</div>
+        <div id="root">
+            <div id="controlContainer">
+                <table>
+                    <tr>
+                        <td style="width:40px"><input type="button" id="pinButton" onclick="onPinButtonClick()"></td>
+                        <td style="width:auto"><input type="text" id="searchField"></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="frameContainer">
+                <div id="sliderHandle">&gt;&gt;</div>
+                <aside id="sliderContainer">
+                    <div id="slider" class="noUiSlider"></div>
+                </aside>
+                <div id="transformContainer">
+                    <iframe name="iframe" id="iframe">
+                        no iframe support
+                    </iframe>
+                </div>
+            </div>
+        </div>
 	</body>
 </html>

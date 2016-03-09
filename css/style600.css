@@ -4,27 +4,21 @@
 	width: 100%;	
 }
 
-#controlContainer #display
-{
-	width: 100%;
-}
-
 #sliderContainer
 {
 	transition: all 0.1s;
 	left: -60px;
 }
-
+#sliderContainer.sliderVisible
+{
+	left: 0;
+}
 
 #sliderHandle
 {
     visibility: visible;
 }
 
-#sliderContainer.sliderVisible
-{
-	left: 0;
-}
 
 #transformContainer
 {
